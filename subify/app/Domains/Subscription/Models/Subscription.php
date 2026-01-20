@@ -8,6 +8,7 @@ use App\Domains\Subscription\Enums\SubscriptionStatus;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Database\Factories\SubscriptionFactory;
 
 /**
  * Represents a user subscription with snapshot of plan features.
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Subscription extends Model
 {
-    /** @use HasFactory<\Database\Factories\SubscriptionFactory> */
+    /** @use HasFactory<SubscriptionFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -33,16 +34,14 @@ class Subscription extends Model
         'currency',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'status' => SubscriptionStatus::class,
-        'starts_at' => 'datetime',
-        'ends_at' => 'datetime',
-        'features_snapshot' => AsArrayObject::class,
-        'price' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'status' => SubscriptionStatus::class,
+            'starts_at' => 'datetime',
+            'ends_at' => 'datetime',
+            'features_snapshot' => AsArrayObject::class,
+            'price' => 'integer',
+        ];
+    }
 }
