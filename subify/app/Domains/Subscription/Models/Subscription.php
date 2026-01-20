@@ -33,14 +33,16 @@ class Subscription extends Model
         'currency',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'status' => SubscriptionStatus::class,
-            'starts_at' => 'datetime',
-            'ends_at' => 'datetime',
-            'features_snapshot' => AsArrayObject::class,
-            'price' => 'integer',
-        ];
-    }
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'status' => SubscriptionStatus::class,
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
+        'features_snapshot' => AsArrayObject::class,
+        'price' => 'integer',
+    ];
 }
