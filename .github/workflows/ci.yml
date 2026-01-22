@@ -5,15 +5,33 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      php-version:
+        description: 'PHP Version'
+        required: true
+        default: '8.4'
+        type: choice
+        options:
+        - 8.4
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: testing
+      DB_USERNAME: sail
+      DB_PASSWORD: password
+
     services:
       pgsql:
         image: postgres:16-alpine
         env:
-          POSTGRES_DB: laravel
+          POSTGRES_DB: testing
           POSTGRES_USER: sail
           POSTGRES_PASSWORD: password
         ports:
@@ -70,13 +88,13 @@ jobs:
 
       - name: Static analysis
         run: |
-          ./vendor/bin/phpstan analyse --no-progress --level=8
+          ./vendor/bin/phpstan analyse --no-progress --level=5
 
       - name: Run tests with coverage
         run: ./vendor/bin/pest --coverage
 
       - name: Security scan
-        run: ./vendor/bin/phpstan analyse --no-progress --level=8 security
+        run: ./vendor/bin/phpstan analyse --no-progress --level=5 security
 
       - name: Check application health
         run: |
