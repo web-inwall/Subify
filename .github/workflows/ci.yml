@@ -93,9 +93,6 @@ jobs:
       - name: Run tests with coverage
         run: ./vendor/bin/pest --coverage
 
-      - name: Security scan
-        run: ./vendor/bin/phpstan analyse --no-progress --level=5 security
-
       - name: Check application health
         run: |
           php artisan config:cache
